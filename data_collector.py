@@ -22,7 +22,9 @@ class DataCollector:
             'ai threat', 'generative ai', 'llm security', 'ai attack', 'deepfake', 'ai model',
             'apt', 'advanced persistent threat', 'nation-state', 'threat actor', 'campaign',
             'espionage', 'attribution', 'threat group', 'cyber warfare', 'state-sponsored',
-            'mobile security', 'hardening', 'encryption', 'privacy'
+            'mobile security', 'hardening', 'encryption', 'privacy', 'sanctions', 'cybercrime',
+            'financial crime', 'fraud', 'scam', 'criminal charges', 'arrested', 'fbi investigation',
+            'law enforcement', 'seized', 'takedown', 'ddos', 'botnet', 'cryptocurrency'
         ]
         
         
