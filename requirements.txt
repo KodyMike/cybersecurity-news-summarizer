@@ -1,0 +1,6 @@
+# Cybersecurity Intelligence System Dependencies
+beautifulsoup4>=4.13.4    
+feedparser>=6.0.11         
+requests>=2.32.4           
+python-dateutil>=2.8.2
+google-generativeai>=0.5.4

@@ -1,0 +1,44 @@
+[project]
+name = "cybersecurity-news-summarizer"
+version = "2.0.0"
+description = "Advanced cybersecurity intelligence collector with web scraping, threat scoring, and Claude AI integration"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [
+    { name = "KodyMike" }
+]
+keywords = ["cybersecurity", "threat-intelligence", "rss", "cisa", "vulnerability-management"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Information Technology",
+    "Topic :: Security",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9", 
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "beautifulsoup4>=4.13.4", 
+    "feedparser>=6.0.11", 
+    "python-dateutil>=2.9.0.post0",
+    "requests>=2.32.4",
+    "google-generativeai>=0.5.4"
+]
+
+[project.scripts]
+cybersec-news-summarizer = "main:main"
+
+[project.urls]
+Homepage = "https://github.com/KodyMike/cybersecurity-news-summarizer"
+Repository = "https://github.com/KodyMike/cybersecurity-news-summarizer" 
+Issues = "https://github.com/KodyMike/cybersecurity-news-summarizer/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
