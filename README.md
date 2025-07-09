@@ -84,11 +84,11 @@ cybersec-news-summarizer --provider claude
 
 ## Automation with Cron
 
-Since the program collects news from the past two weeks, running it once or twice per week is sufficient.
+Since the program collects news from the past two weeks, running it once every 2 weeks is sufficient.
 
 ```bash
-# Run twice weekly (Mon & Thurs at 8am) using Gemini
-0 8 * * 1,4 cybersec-news-summarizer --provider gemini --quiet
+# Run every 2 weeks (Monday at 8am) using Gemini
+0 8 1,15 * * cybersec-news-summarizer --provider gemini --quiet
 ```
 
 
