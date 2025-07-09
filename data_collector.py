@@ -242,6 +242,78 @@ class DataCollector:
                 print(f"Error collecting CISA KEV: {e}")
             return []
 
+    def collect_crowdstrike_source(self, source):
+        """Special two-phase collection for CrowdStrike RSS (minimal content)"""
+        try:
+            # Phase 1: Collect recent links from RSS (date-filtered only)
+            if not self.quiet:
+                print(f"  Phase 1: Collecting recent links from {source['name']}")
+            
+            response = self.session.get(source['url'], timeout=30)
+            if response.status_code != 200:
+                return []
+                
+            feed = feedparser.parse(response.content)
+            cutoff_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=14)
+            
+            recent_links = []
+            for entry in feed.entries:
+                try:
+                    pub_date = None
+                    if hasattr(entry, 'published_parsed') and entry.published_parsed:
+                        pub_date = datetime(*entry.published_parsed[:6])
+                    elif hasattr(entry, 'published') and entry.published:
+                        pub_date = parse(entry.published)
+                    
+                    if pub_date and pub_date.tzinfo is not None:
+                        pub_date = pub_date.replace(tzinfo=None)
+                    
+                    if pub_date and pub_date >= cutoff_date:
+                        recent_links.append({
+                            'title': entry.title,
+                            'link': entry.link,
+                            'published': pub_date.isoformat()
+                        })
+                except:
+                    continue
+            
+            if not self.quiet:
+                print(f"  Phase 1 complete: {len(recent_links)} recent links found")
+            
+            # Phase 2: Scrape content and apply threat filtering
+            if not self.quiet:
+                print(f"  Phase 2: Scraping content and filtering threats")
+            
+            articles = []
+            for link_data in recent_links:
+                full_content = self.scrape_full_article(link_data['link'])
+                
+                if full_content:
+                    # Apply threat filtering using title + scraped content
+                    if self.is_threat_relevant(link_data['title'], full_content, source['name']):
+                        articles.append({
+                            'title': link_data['title'],
+                            'summary': full_content[:300] + "..." if len(full_content) > 300 else full_content,
+                            'full_content': full_content,
+                            'link': link_data['link'],
+                            'published': link_data['published'],
+                            'source_type': 'rss'
+                        })
+                
+                # Limit to avoid overwhelming the system
+                if len(articles) >= 10:
+                    break
+            
+            if not self.quiet:
+                print(f"  Phase 2 complete: {len(articles)} relevant articles found")
+            
+            return articles
+            
+        except Exception as e:
+            if not self.quiet:
+                print(f"Error collecting from {source['name']}: {e}")
+            return []
+
     def collect_all(self):
         if not self.quiet:
             print("Collecting cybersecurity intelligence...")
@@ -255,6 +327,7 @@ class DataCollector:
             {'name': 'Security Week', 'url': 'https://www.securityweek.com/feed/'},
             {'name': 'Recorded Future', 'url': 'https://www.recordedfuture.com/feed'},
             {'name': 'Mandiant', 'url': 'https://cloudblog.withgoogle.com/topics/threat-intelligence/rss/'},
+            {'name': 'CrowdStrike', 'url': 'https://www.crowdstrike.com/en-us/blog/feed'},
         ]
         
         all_data = {
@@ -263,7 +336,12 @@ class DataCollector:
         }
         
         for source in sources:
-            articles = self.collect_rss_source(source)
+            # Use special collection method for CrowdStrike
+            if source['name'] == 'CrowdStrike':
+                articles = self.collect_crowdstrike_source(source)
+            else:
+                articles = self.collect_rss_source(source)
+            
             all_data['sources'].append({
                 'name': source['name'],
                 'type': 'rss',

@@ -151,7 +151,15 @@ Format EXACTLY as:
                 print(f"Sending prompt to Gemini API ({len(prompt)} characters)...")
 
             model = genai.GenerativeModel('gemini-1.5-flash')
-            response = model.generate_content(prompt)
+            
+            # Configure generation for factual accuracy in cybersecurity intelligence
+            generation_config = genai.types.GenerationConfig(
+                temperature=0.1,  # Very low for factual accuracy, less creative interpretation
+                top_p=0.8,       # Consider tokens that make up 80% of probability mass
+                top_k=40         # Only consider top 40 most likely tokens at each step
+            )
+            
+            response = model.generate_content(prompt, generation_config=generation_config)
             
             with open('gemini_raw_response.txt', 'w') as f:
                 f.write(response.text)
