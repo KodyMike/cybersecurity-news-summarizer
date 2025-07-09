@@ -1,6 +1,6 @@
 # Cybersecurity News Summarizer
 
-An advanced, modular Python system that collects cybersecurity intelligence from the past two weeks, performs intelligent content analysis with AI (Google Gemini or Anthropic Claude), and generates professional briefings for LinkedIn and Yammer.
+An advanced, modular Python system that collects cybersecurity intelligence from the past two weeks, performs intelligent content analysis with AI (Google Gemini or Anthropic Claude), and generates professional briefings for LinkedIn and Viva Engage.
 
 ## Features
 
@@ -10,7 +10,7 @@ An advanced, modular Python system that collects cybersecurity intelligence from
 - **Web Scraping Enhancement**: Full article content extraction for detailed analysis.
 - **Smart Threat Scoring**: Balanced algorithm prioritizing critical vulnerabilities.
 - **Source Diversity**: Prevents any single source from dominating output.
-- **Dual Output**: LinkedIn posts with emojis + professional Yammer briefs.
+- **Dual Output**: LinkedIn posts with emojis + professional Viva Engage briefs.
 
 ## Architecture
 
@@ -109,7 +109,7 @@ Since the program collects news from the past two weeks, running it once or twic
 
 - **`raw_cybersec_data.json`** - Collected intelligence data
 - **`linkedin_ready.md`** - Social media posts with emojis
-- **`yammer_ready.txt`** - Internal briefing format
+- **`yammer_ready.txt`** - Viva Engage briefing format
 
 ## Configuration
 
@@ -124,19 +124,22 @@ The system automatically:
 
 ### LinkedIn Format
 
-```markdown
-🔒 **Cybersecurity Intelligence Update** - 2025-07-02
+```
+Cybersecurity Threat Landscape Update: Week of [DATE] 🚨
 
-**📋 Executive Summary:**
-This week's threat landscape shows elevated activity with 7 critical vulnerabilities...
+[Executive summary paragraph describing the week's threat landscape, 
+key trends, and statistics from multiple sources...]
 
-**📰 Latest Threats & Vulnerabilities:**
-• **Critical Microsens Product Flaws Allow Hackers to Go 'From Zero to Hero'** - Security Week
-  CISA has informed organizations about critical authentication bypass...
-  🔗 https://www.securityweek.com/...
+Top 10 Critical Threats:
+
+1. [Threat Title]: [Brief description] 🔗 [source-url]
+2. [Threat Title]: [Brief description] 🔗 [source-url]
+...
+
+#cybersecurity #threatintelligence #ransomware #vulnerabilities
 ```
 
-### Yammer Format
+### Viva Engage Format
 
 ```text
 CYBERSECURITY INTELLIGENCE BRIEF - 2025-07-02
